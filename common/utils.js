@@ -1,3 +1,4 @@
+console.log('utils.js loaded');
 // Utility functions for the whole project
 
 window.utils = {

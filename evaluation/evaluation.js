@@ -1,3 +1,4 @@
+console.log('evaluation.js loaded');
 // 평가 사이트 메인 로직
 class EvaluationApp {
     constructor() {
