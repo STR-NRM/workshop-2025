@@ -194,9 +194,9 @@ class ChartManager {
         const allScores = [];
         
         Object.values(evaluationData.evaluations).forEach(user => {
-            Object.values(user.evaluations).forEach(eval => {
-                const avgScore = (eval.scores.tech + eval.scores.demand + 
-                                eval.scores.resource + eval.scores.market) / 4;
+            Object.values(user.evaluations).forEach(evaluation => {
+                const avgScore = (evaluation.scores.tech + evaluation.scores.demand + 
+                                evaluation.scores.resource + evaluation.scores.market) / 4;
                 allScores.push(avgScore);
             });
         });
