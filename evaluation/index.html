@@ -9,7 +9,6 @@
     <link rel="manifest" href="../manifest.json">
     <link rel="stylesheet" href="../common/styles.css">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <!-- 헤더 -->
@@ -266,6 +265,23 @@
         </div>
     </div>
 
+    <!-- Chart.js를 먼저 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- 디버깅을 위한 스크립트 추가 -->
+    <script>
+        console.log('Page loaded');
+        
+        // 스크립트 로드 확인
+        window.addEventListener('load', function() {
+            console.log('Window loaded');
+            console.log('AI_IDEAS_DATA exists:', typeof AI_IDEAS_DATA !== 'undefined');
+            console.log('EvaluationApp exists:', typeof EvaluationApp !== 'undefined');
+            console.log('Chart exists:', typeof Chart !== 'undefined');
+        });
+    </script>
+    
+    <!-- 애플리케이션 스크립트들 -->
     <script src="ideas-data.js"></script>
     <script src="evaluation.js"></script>
     <script src="results.js"></script>

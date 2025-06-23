@@ -22,9 +22,16 @@ class EvaluationApp {
     
     setupEventListeners() {
         // 평가 시작 버튼
-        document.getElementById('startEvaluation').addEventListener('click', () => {
-            this.startEvaluation();
-        });
+        const startButton = document.getElementById('startEvaluation');
+        if (startButton) {
+            console.log('Start button found, adding event listener');
+            startButton.addEventListener('click', () => {
+                console.log('Start button clicked');
+                this.startEvaluation();
+            });
+        } else {
+            console.error('Start button not found!');
+        }
         
         // 이름 입력 Enter 키 처리
         document.getElementById('evaluatorName').addEventListener('keypress', (e) => {
@@ -98,8 +105,15 @@ class EvaluationApp {
     }
     
     startEvaluation() {
+        console.log('startEvaluation function called');
         const nameInput = document.getElementById('evaluatorName');
+        if (!nameInput) {
+            console.error('Name input element not found');
+            return;
+        }
+        
         const name = nameInput.value.trim();
+        console.log('Evaluator name:', name);
         
         if (!name) {
             alert('평가자 이름을 입력해주세요.');
@@ -667,5 +681,38 @@ class EvaluationApp {
 
 // 앱 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    window.evaluationApp = new EvaluationApp();
+    console.log('DOMContentLoaded event fired');
+    console.log('AI_IDEAS_DATA available:', typeof AI_IDEAS_DATA !== 'undefined');
+    console.log('EVALUATION_CRITERIA available:', typeof EVALUATION_CRITERIA !== 'undefined');
+    
+    // AI_IDEAS_DATA가 없으면 기본 데이터 설정
+    if (typeof AI_IDEAS_DATA === 'undefined') {
+        console.error('AI_IDEAS_DATA is not loaded!');
+        window.AI_IDEAS_DATA = [];
+    }
+    
+    if (typeof EVALUATION_CRITERIA === 'undefined') {
+        console.error('EVALUATION_CRITERIA is not loaded!');
+        window.EVALUATION_CRITERIA = {};
+    }
+    
+    try {
+        window.evaluationApp = new EvaluationApp();
+        console.log('EvaluationApp initialized successfully');
+    } catch (error) {
+        console.error('Error initializing EvaluationApp:', error);
+    }
 });
+
+// 디버깅을 위한 전역 함수
+window.debugStartEvaluation = function() {
+    const nameInput = document.getElementById('evaluatorName');
+    const name = nameInput.value.trim();
+    console.log('Debug: Name input value:', name);
+    
+    if (window.evaluationApp) {
+        window.evaluationApp.startEvaluation();
+    } else {
+        console.error('evaluationApp is not initialized');
+    }
+};
