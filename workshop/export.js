@@ -1,3 +1,5 @@
+import { escapeHtml } from '../common/utils.js';
+
 // PDF 내보내기 기능
 function exportToPdf(participantName, responses) {
     // 간단한 PDF 내보내기 구현 (브라우저 인쇄 API 사용)
@@ -161,17 +163,6 @@ function generatePrintContent(participantName, responses) {
     `;
     
     return content;
-}
-
-function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.replace(/[&<>"']/g, m => map[m]);
 }
 
 // jsPDF를 사용한 고급 PDF 내보내기 (옵션)

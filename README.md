@@ -154,3 +154,15 @@ workshop-2025/
 ---
 
 문의사항이 있으시면 이슈를 생성해주세요!
+
+## 🛠️ Improvements
+- Centralized HTML escaping and DOM access utilities in `common/utils.js` for security and reliability.
+- All user input rendering now uses `escapeHtml` to prevent XSS.
+- All required DOM element accesses use `getRequiredElement` for safer code.
+- All localStorage access is wrapped in try/catch with user notifications on error.
+- Added a non-blocking notification system for user feedback.
+- Added a 404.html for GitHub Pages.
+- Service worker now uses cache versioning for better update handling.
+
+## 🚀 Performance
+For best performance in production, consider minifying JS/CSS and bundling dependencies. This project currently uses unminified files for easier debugging.

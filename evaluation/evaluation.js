@@ -1,3 +1,5 @@
+import { escapeHtml, getRequiredElement, showNotification } from '../common/utils.js';
+
 // 평가 사이트 메인 로직
 class EvaluationApp {
     constructor() {
@@ -566,7 +568,7 @@ class EvaluationApp {
                             <span class="comment-idea">${idea.title}</span>
                             <span class="comment-author">${commentData.author}</span>
                         </div>
-                        <div class="comment-text">${this.escapeHtml(commentData.comment)}</div>
+                        <div class="comment-text">${escapeHtml(commentData.comment)}</div>
                     `;
                     
                     commentsList.appendChild(commentItem);
@@ -665,17 +667,6 @@ class EvaluationApp {
                 console.error('저장된 데이터 불러오기 실패:', error);
             }
         }
-    }
-    
-    escapeHtml(text) {
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, m => map[m]);
     }
 }
 
