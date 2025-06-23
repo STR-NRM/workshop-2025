@@ -107,49 +107,66 @@ class EvaluationApp {
     }
     
     startEvaluation() {
-        console.log('startEvaluation function called');
-        const nameInput = document.getElementById('evaluatorName');
-        if (!nameInput) {
-            console.error('Name input element not found');
-            return;
+        try {
+            console.log('startEvaluation function called');
+            const nameInput = getRequiredElement('evaluatorName');
+            if (!nameInput) {
+                showNotification('이름 입력란을 찾을 수 없습니다.', 'error');
+                return;
+            }
+            const name = nameInput.value.trim();
+            console.log('Evaluator name:', name);
+            if (!name) {
+                showNotification('평가자 이름을 입력해주세요.', 'error');
+                nameInput.focus();
+                return;
+            }
+            // 사용자 ID 생성 또는 기존 사용자 찾기
+            const existingUser = Object.values(this.allEvaluations).find(user => user.name === name);
+            if (existingUser) {
+                this.currentUser = existingUser;
+            } else {
+                this.currentUser = {
+                    id: this.generateUserId(),
+                    name: name,
+                    evaluations: {},
+                    customIdeas: [],
+                    timestamp: new Date().toISOString()
+                };
+                this.allEvaluations[this.currentUser.id] = this.currentUser;
+            }
+            // Check for required DOM elements
+            const currentEvaluator = getRequiredElement('currentEvaluator');
+            const evaluatorInfo = getRequiredElement('evaluatorInfo');
+            const evaluationSection = getRequiredElement('evaluationSection');
+            const participantInputGroup = document.querySelector('.participant-input-group');
+            if (!participantInputGroup) {
+                showNotification('참가자 입력 그룹 요소가 없습니다.', 'error');
+                return;
+            }
+            // Check for global data
+            if (typeof AI_IDEAS_DATA === 'undefined' || !Array.isArray(AI_IDEAS_DATA)) {
+                showNotification('AI 아이디어 데이터가 로드되지 않았습니다.', 'error');
+                return;
+            }
+            if (typeof EVALUATION_CRITERIA === 'undefined' || typeof EVALUATION_CRITERIA !== 'object') {
+                showNotification('평가 기준 데이터가 로드되지 않았습니다.', 'error');
+                return;
+            }
+            // UI 업데이트
+            currentEvaluator.textContent = name;
+            evaluatorInfo.style.display = 'block';
+            evaluationSection.style.display = 'block';
+            participantInputGroup.style.display = 'none';
+            // 진행률 업데이트
+            this.updateProgress();
+            // 데이터 저장
+            this.saveToLocalStorage();
+            console.log('startEvaluation completed successfully');
+        } catch (error) {
+            console.error('Error in startEvaluation:', error);
+            showNotification('초기화 오류: ' + (error.message || error), 'error');
         }
-        
-        const name = nameInput.value.trim();
-        console.log('Evaluator name:', name);
-        
-        if (!name) {
-            alert('평가자 이름을 입력해주세요.');
-            nameInput.focus();
-            return;
-        }
-        
-        // 사용자 ID 생성 또는 기존 사용자 찾기
-        const existingUser = Object.values(this.allEvaluations).find(user => user.name === name);
-        
-        if (existingUser) {
-            this.currentUser = existingUser;
-        } else {
-            this.currentUser = {
-                id: this.generateUserId(),
-                name: name,
-                evaluations: {},
-                customIdeas: [],
-                timestamp: new Date().toISOString()
-            };
-            this.allEvaluations[this.currentUser.id] = this.currentUser;
-        }
-        
-        // UI 업데이트
-        document.getElementById('currentEvaluator').textContent = name;
-        document.getElementById('evaluatorInfo').style.display = 'block';
-        document.getElementById('evaluationSection').style.display = 'block';
-        document.querySelector('.participant-input-group').style.display = 'none';
-        
-        // 진행률 업데이트
-        this.updateProgress();
-        
-        // 데이터 저장
-        this.saveToLocalStorage();
     }
     
     renderIdeasGrid() {
