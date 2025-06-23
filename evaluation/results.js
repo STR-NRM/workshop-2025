@@ -24,11 +24,11 @@ class ResultsManager {
         Object.values(evaluationData.evaluations).forEach(user => {
             stats.totalEvaluations += Object.keys(user.evaluations).length;
             
-            Object.values(user.evaluations).forEach(eval => {
-                stats.criteriaAverages.tech.push(eval.scores.tech);
-                stats.criteriaAverages.demand.push(eval.scores.demand);
-                stats.criteriaAverages.resource.push(eval.scores.resource);
-                stats.criteriaAverages.market.push(eval.scores.market);
+            Object.values(user.evaluations).forEach(evaluation => {
+                stats.criteriaAverages.tech.push(evaluation.scores.tech);
+                stats.criteriaAverages.demand.push(evaluation.scores.demand);
+                stats.criteriaAverages.resource.push(evaluation.scores.resource);
+                stats.criteriaAverages.market.push(evaluation.scores.market);
             });
         });
         

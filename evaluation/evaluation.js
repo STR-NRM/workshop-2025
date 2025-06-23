@@ -442,8 +442,8 @@ class EvaluationApp {
         Object.values(this.allEvaluations).forEach(user => {
             totalEvaluations += Object.keys(user.evaluations).length;
             
-            Object.values(user.evaluations).forEach(eval => {
-                const scores = Object.values(eval.scores);
+            Object.values(user.evaluations).forEach(evaluation => {
+                const scores = Object.values(evaluation.scores);
                 totalScore += scores.reduce((a, b) => a + b, 0);
                 scoreCount += scores.length;
             });
