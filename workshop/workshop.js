@@ -13,9 +13,6 @@ class WorkshopApp {
     }
     
     initializeApp() {
-        // LocalStorage에서 데이터 불러오기
-        this.loadFromLocalStorage();
-        
         // 이벤트 리스너 설정
         this.setupEventListeners();
         
@@ -103,7 +100,6 @@ class WorkshopApp {
             return;
         }
         this.participantName = name;
-        this.saveToLocalStorage();
         await this.saveToFirestore();
         window.utils.getRequiredElement('summaryParticipant').textContent = name;
         this.navigateToScreen('1-1');
@@ -168,7 +164,6 @@ class WorkshopApp {
     
     async saveResponse(questionId, value) {
         this.responses[questionId] = value;
-        this.saveToLocalStorage();
         await this.saveToFirestore();
         this.showSaveIndicator();
     }
@@ -176,42 +171,6 @@ class WorkshopApp {
     showSaveIndicator() {
         // 간단한 저장 표시 (추후 구현 가능)
         console.log('응답이 자동 저장되었습니다.');
-    }
-    
-    saveToLocalStorage() {
-        const data = {
-            participantName: this.participantName,
-            responses: this.responses,
-            lastUpdated: new Date().toISOString()
-        };
-        try {
-            localStorage.setItem('workshopData', JSON.stringify(data));
-        } catch (error) {
-            window.utils.showNotification('저장 실패', '저장 중 오류가 발생했습니다. 브라우저 설정을 확인해주세요.', 'error');
-        }
-    }
-    
-    async loadFromLocalStorage() {
-        const savedData = localStorage.getItem('workshopData');
-        if (savedData) {
-            try {
-                const data = JSON.parse(savedData);
-                this.participantName = data.participantName || '';
-                this.responses = data.responses || {};
-                if (this.participantName) {
-                    window.utils.getRequiredElement('participantName').value = this.participantName;
-                }
-                Object.keys(this.responses).forEach(questionId => {
-                    const textarea = document.querySelector(`[data-question-id="${questionId}"]`);
-                    if (textarea) {
-                        textarea.value = this.responses[questionId];
-                    }
-                });
-            } catch (error) {
-                window.utils.showNotification('데이터 불러오기 실패', '저장된 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
-            }
-        }
-        await this.loadFromFirestore();
     }
     
     showSummary() {
