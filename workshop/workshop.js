@@ -1,3 +1,6 @@
+console.log('workshop.js loaded, window.utils:', window.utils);
+console.log('workshop.js loaded, window.utils.getRequiredElement:', window.utils && window.utils.getRequiredElement);
+
 // 워크샵 메인 로직
 class WorkshopApp {
     constructor() {
