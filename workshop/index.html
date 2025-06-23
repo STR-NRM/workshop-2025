@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 상반기 팀 워크샵 - 메인 세션</title>
+    <link rel="stylesheet" href="../common/styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 진행률 바 -->
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text">
+            <span id="currentQuestion">1</span> / <span id="totalQuestions">7</span>
+        </div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <div class="workshop-container">
+        <!-- 시작 화면 -->
+        <section id="startScreen" class="screen active">
+            <div class="start-content">
+                <h1 class="start-title">2025년 상반기 팀 워크샵</h1>
+                <p class="start-subtitle">AI 전략팀의 미래를 함께 그려갑니다</p>
+                
+                <div class="start-card">
+                    <h2>워크샵 안건</h2>
+                    <ul class="agenda-list">
+                        <li>
+                            <span class="agenda-number">1</span>
+                            <span class="agenda-title">미래 AI 비즈니스</span>
+                        </li>
+                        <li>
+                            <span class="agenda-number">2</span>
+                            <span class="agenda-title">팀/팀원의 역할과 목표</span>
+                        </li>
+                        <li>
+                            <span class="agenda-number">3</span>
+                            <span class="agenda-title">차세대 AI 서비스</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="participant-form">
+                    <label for="participantName">참가자 이름</label>
+                    <input 
+                        type="text" 
+                        id="participantName" 
+                        class="input" 
+                        placeholder="이름을 입력해주세요"
+                        required
+                    >
+                    <button id="startBtn" class="btn btn-primary btn-large">
+                        워크샵 시작하기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 질문 화면들 -->
+        <!-- 안건 1: 미래 AI 비즈니스 -->
+        <section class="screen question-screen" data-question="1-1" data-agenda="1">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 1: 미래 AI 비즈니스</h2>
+                <div class="question-number">질문 1/2</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    전략팀 구성원 각자가 생각하는 2~3년 후 학술 산업의 미래는 무엇인가?
+                </h3>
+                <p class="question-hint">
+                    AI 기술의 발전이 학술 산업에 미칠 영향과 변화를 자유롭게 작성해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input" 
+                    placeholder="여기에 의견을 작성해주세요..."
+                    data-question-id="1-1"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="startScreen">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="1-2">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <section class="screen question-screen" data-question="1-2" data-agenda="1">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 1: 미래 AI 비즈니스</h2>
+                <div class="question-number">질문 2/2</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    단기간에 사라지지 않을 AI 사업을 추진하려면, 어떻게 해야 할까?
+                </h3>
+                <p class="question-hint">
+                    지속가능한 AI 비즈니스 모델과 전략에 대한 의견을 공유해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input" 
+                    placeholder="여기에 의견을 작성해주세요..."
+                    data-question-id="1-2"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="1-1">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="2-1">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <!-- 안건 2: 팀/팀원의 역할과 목표 -->
+        <section class="screen question-screen" data-question="2-1" data-agenda="2">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 2: 팀/팀원의 역할과 목표</h2>
+                <div class="question-number">질문 1/2</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    AI 전략팀은 2025년 하반기에 어떤 역할을 수행해야 하는가? 목표는 무엇인가?
+                </h3>
+                <p class="question-hint">
+                    팀의 방향성과 구체적인 목표에 대해 작성해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input" 
+                    placeholder="여기에 의견을 작성해주세요..."
+                    data-question-id="2-1"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="1-2">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="2-2">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <section class="screen question-screen" data-question="2-2" data-agenda="2">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 2: 팀/팀원의 역할과 목표</h2>
+                <div class="question-number">질문 2/2</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    팀원 각자는 해당 목표 달성을 위해 어떤 역할을 중점적으로 수행하고 싶은가? 어떤 일을 맡아서 하고 싶은가?
+                </h3>
+                <p class="question-hint">
+                    개인의 강점과 관심사를 바탕으로 희망하는 역할을 작성해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input" 
+                    placeholder="여기에 의견을 작성해주세요..."
+                    data-question-id="2-2"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="2-1">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="3-1">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <!-- 안건 3: 차세대 AI 서비스 -->
+        <section class="screen question-screen" data-question="3-1" data-agenda="3">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 3: 차세대 AI 서비스</h2>
+                <div class="question-number">질문 1/3</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    팀원 각자가 생각하는 추진해볼 만한 차세대 AI 서비스 3가지와 그 이유는?
+                </h3>
+                <p class="question-hint">
+                    혁신적이고 실현 가능한 AI 서비스 아이디어를 3가지 제안해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input question-input-tall" 
+                    placeholder="1. 첫 번째 아이디어: &#10;&#10;2. 두 번째 아이디어: &#10;&#10;3. 세 번째 아이디어: "
+                    data-question-id="3-1"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="2-2">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="3-2">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <section class="screen question-screen" data-question="3-2" data-agenda="3">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 3: 차세대 AI 서비스</h2>
+                <div class="question-number">질문 2/3</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    기술, 수요, 리소스, 시장파이 측면에서 점수를 매겨 본다면?
+                </h3>
+                <p class="question-hint">
+                    위에서 제안한 3가지 아이디어에 대해 각 측면별로 평가해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input question-input-tall" 
+                    placeholder="각 아이디어별로 4가지 측면을 평가해주세요:&#10;&#10;아이디어 1:&#10;- 기술 적합성: &#10;- 수요 적합성: &#10;- 리소스 적합성: &#10;- 시장파이: &#10;&#10;(아이디어 2, 3도 동일하게 작성)"
+                    data-question-id="3-2"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="3-1">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="3-3">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <section class="screen question-screen" data-question="3-3" data-agenda="3">
+            <div class="question-header">
+                <h2 class="agenda-title">안건 3: 차세대 AI 서비스</h2>
+                <div class="question-number">질문 3/3</div>
+            </div>
+            
+            <div class="question-content">
+                <h3 class="question-text">
+                    AI 전략팀이 곧은 차세대 AI 서비스 3가지는?
+                </h3>
+                <p class="question-hint">
+                    팀 차원에서 우선적으로 추진해야 할 AI 서비스를 선정해주세요.
+                </p>
+                
+                <textarea 
+                    class="textarea question-input" 
+                    placeholder="팀이 집중해야 할 3가지 AI 서비스와 선정 이유를 작성해주세요..."
+                    data-question-id="3-3"
+                ></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary nav-prev" data-target="3-2">
+                    이전
+                </button>
+                <button class="btn btn-primary nav-next" data-target="summary">
+                    완료
+                </button>
+            </div>
+        </section>
+
+        <!-- 요약 화면 -->
+        <section id="summary" class="screen">
+            <div class="summary-content">
+                <h1 class="summary-title">워크샵 응답 요약</h1>
+                <p class="summary-subtitle">모든 질문에 대한 응답이 저장되었습니다.</p>
+                
+                <div class="participant-info">
+                    <span class="participant-label">참가자:</span>
+                    <span id="summaryParticipant" class="participant-name"></span>
+                </div>
+
+                <div id="responseSummary" class="response-summary">
+                    <!-- 동적으로 응답 내용이 추가됩니다 -->
+                </div>
+
+                <div class="export-buttons">
+                    <button id="exportJson" class="btn btn-secondary">
+                        JSON으로 내보내기
+                    </button>
+                    <button id="exportPdf" class="btn btn-primary">
+                        PDF로 내보내기
+                    </button>
+                    <button id="backToStart" class="btn btn-secondary">
+                        처음으로
+                    </button>
+                </div>
+
+                <div class="evaluation-link">
+                    <p>다음 단계: 아이디어 평가하기</p>
+                    <a href="../evaluation/index.html" class="btn btn-primary">
+                        안건 3 평가 사이트로 이동
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="workshop.js"></script>
+    <script src="export.js"></script>
+</body>
+</html>
