@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 상반기 팀 워크샵 - 안건3 아이디어 평가</title>
+    <link rel="stylesheet" href="../common/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="evaluation-header">
+        <div class="header-content">
+            <h1 class="header-title">차세대 AI 서비스 평가</h1>
+            <p class="header-subtitle">기술, 수요, 리소스, 시장파이 측면에서 아이디어를 평가해주세요</p>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="evaluation-container">
+        <!-- 참가자 정보 섹션 -->
+        <section class="participant-section">
+            <div class="participant-card">
+                <h2>평가자 정보</h2>
+                <div class="participant-input-group">
+                    <label for="evaluatorName">이름</label>
+                    <input 
+                        type="text" 
+                        id="evaluatorName" 
+                        class="input" 
+                        placeholder="평가자 이름을 입력하세요"
+                        required
+                    >
+                    <button id="startEvaluation" class="btn btn-primary">
+                        평가 시작하기
+                    </button>
+                </div>
+                <div id="evaluatorInfo" class="evaluator-info" style="display: none;">
+                    <p>평가자: <span id="currentEvaluator"></span></p>
+                    <p>진행률: <span id="evaluationProgress">0</span> / <span id="totalIdeas">14</span> 완료</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 아이디어 평가 섹션 -->
+        <section id="evaluationSection" class="evaluation-section" style="display: none;">
+            <h2 class="section-title">AI 서비스 아이디어 평가</h2>
+            
+            <!-- 필터 및 정렬 옵션 -->
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="evaluated">평가완료</button>
+                <button class="filter-btn" data-filter="pending">미평가</button>
+            </div>
+
+            <!-- 아이디어 카드 그리드 -->
+            <div id="ideasGrid" class="ideas-grid">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+
+            <!-- 커스텀 아이디어 추가 -->
+            <div class="custom-idea-section">
+                <h3>나만의 아이디어 추가</h3>
+                <button id="addCustomIdea" class="btn btn-secondary">
+                    + 새 아이디어 추가
+                </button>
+                <div id="customIdeaForm" class="custom-idea-form" style="display: none;">
+                    <input 
+                        type="text" 
+                        id="customIdeaTitle" 
+                        class="input" 
+                        placeholder="아이디어 제목"
+                    >
+                    <textarea 
+                        id="customIdeaDescription" 
+                        class="textarea" 
+                        placeholder="아이디어 설명"
+                    ></textarea>
+                    <div class="form-buttons">
+                        <button id="saveCustomIdea" class="btn btn-primary">저장</button>
+                        <button id="cancelCustomIdea" class="btn btn-secondary">취소</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 평가 완료 버튼 -->
+            <div class="evaluation-complete">
+                <button id="completeEvaluation" class="btn btn-primary btn-large">
+                    평가 완료 및 결과 보기
+                </button>
+            </div>
+        </section>
+
+        <!-- 결과 대시보드 섹션 -->
+        <section id="resultsSection" class="results-section" style="display: none;">
+            <h2 class="section-title">평가 결과 대시보드</h2>
+
+            <!-- 전체 통계 -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <h3>총 평가자 수</h3>
+                    <div class="stat-value" id="totalEvaluators">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>평가된 아이디어</h3>
+                    <div class="stat-value" id="evaluatedIdeas">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>평균 점수</h3>
+                    <div class="stat-value" id="averageScore">0.0</div>
+                </div>
+            </div>
+
+            <!-- 순위표 -->
+            <div class="ranking-section">
+                <h3>종합 순위</h3>
+                <div class="ranking-tabs">
+                    <button class="tab-btn active" data-view="overall">종합점수</button>
+                    <button class="tab-btn" data-view="tech">기술적합성</button>
+                    <button class="tab-btn" data-view="demand">수요적합성</button>
+                    <button class="tab-btn" data-view="resource">리소스적합성</button>
+                    <button class="tab-btn" data-view="market">시장파이</button>
+                </div>
+                <div id="rankingList" class="ranking-list">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+
+            <!-- 차트 섹션 -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>카테고리별 평균 점수</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>상위 5개 아이디어</h3>
+                    <canvas id="topIdeasChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 의견 모음 -->
+            <div class="comments-section">
+                <h3>평가 의견 모음</h3>
+                <div id="commentsList" class="comments-list">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+
+            <!-- 액션 버튼 -->
+            <div class="results-actions">
+                <button id="exportResults" class="btn btn-primary">
+                    결과 내보내기
+                </button>
+                <button id="backToEvaluation" class="btn btn-secondary">
+                    평가 화면으로
+                </button>
+                <a href="../workshop/index.html" class="btn btn-secondary">
+                    메인 워크샵으로
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- 평가 모달 -->
+    <div id="evaluationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalIdeaTitle"></h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalIdeaDescription"></p>
+                
+                <div class="evaluation-form">
+                    <!-- 기술 적합성 -->
+                    <div class="criteria-group">
+                        <label>기술 적합성</label>
+                        <div class="score-input">
+                            <input 
+                                type="range" 
+                                id="techScore" 
+                                class="score-slider" 
+                                min="1" 
+                                max="5" 
+                                value="3"
+                            >
+                            <span class="score-value" id="techScoreValue">3</span>
+                        </div>
+                        <p class="criteria-hint">현재 기술로 구현 가능한 정도</p>
+                    </div>
+
+                    <!-- 수요 적합성 -->
+                    <div class="criteria-group">
+                        <label>수요 적합성</label>
+                        <div class="score-input">
+                            <input 
+                                type="range" 
+                                id="demandScore" 
+                                class="score-slider" 
+                                min="1" 
+                                max="5" 
+                                value="3"
+                            >
+                            <span class="score-value" id="demandScoreValue">3</span>
+                        </div>
+                        <p class="criteria-hint">시장의 필요성과 사용자 수요</p>
+                    </div>
+
+                    <!-- 리소스 적합성 -->
+                    <div class="criteria-group">
+                        <label>리소스 적합성</label>
+                        <div class="score-input">
+                            <input 
+                                type="range" 
+                                id="resourceScore" 
+                                class="score-slider" 
+                                min="1" 
+                                max="5" 
+                                value="3"
+                            >
+                            <span class="score-value" id="resourceScoreValue">3</span>
+                        </div>
+                        <p class="criteria-hint">필요한 인력, 시간, 비용 대비 효율성</p>
+                    </div>
+
+                    <!-- 시장파이 적합성 -->
+                    <div class="criteria-group">
+                        <label>시장파이 적합성</label>
+                        <div class="score-input">
+                            <input 
+                                type="range" 
+                                id="marketScore" 
+                                class="score-slider" 
+                                min="1" 
+                                max="5" 
+                                value="3"
+                            >
+                            <span class="score-value" id="marketScoreValue">3</span>
+                        </div>
+                        <p class="criteria-hint">잠재 시장 규모와 성장 가능성</p>
+                    </div>
+
+                    <!-- 의견 -->
+                    <div class="comment-group">
+                        <label>추가 의견</label>
+                        <textarea 
+                            id="evaluationComment" 
+                            class="textarea" 
+                            placeholder="이 아이디어에 대한 의견을 자유롭게 작성해주세요..."
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveEvaluation" class="btn btn-primary">
+                    평가 저장
+                </button>
+                <button id="cancelEvaluation" class="btn btn-secondary">
+                    취소
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ideas-data.js"></script>
+    <script src="evaluation.js"></script>
+    <script src="results.js"></script>
+    <script src="charts.js"></script>
+</body>
+</html>
