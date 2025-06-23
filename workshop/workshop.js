@@ -31,13 +31,13 @@ class WorkshopApp {
     setupEventListeners() {
         // 시작 버튼
         const startBtn = window.utils.getRequiredElement('startBtn');
-        startBtn.addEventListener('click', () => this.startWorkshop());
+        startBtn.addEventListener('click', async () => await this.startWorkshop());
         
         // 참가자 이름 입력 Enter 키 처리
         const nameInput = window.utils.getRequiredElement('participantName');
-        nameInput.addEventListener('keypress', (e) => {
+        nameInput.addEventListener('keypress', async (e) => {
             if (e.key === 'Enter') {
-                this.startWorkshop();
+                await this.startWorkshop();
             }
         });
         
@@ -52,9 +52,9 @@ class WorkshopApp {
         // 질문 입력 필드들
         document.querySelectorAll('.question-input').forEach(textarea => {
             // 자동 저장
-            textarea.addEventListener('input', (e) => {
+            textarea.addEventListener('input', async (e) => {
                 const questionId = e.target.dataset.questionId;
-                this.autoSave(questionId, e.target.value);
+                await this.saveResponse(questionId, e.target.value);
             });
             
             // 기존 응답 불러오기
@@ -94,23 +94,18 @@ class WorkshopApp {
         });
     }
     
-    startWorkshop() {
+    async startWorkshop() {
         const nameInput = window.utils.getRequiredElement('participantName');
         const name = nameInput.value.trim();
-        
         if (!name) {
             alert('참가자 이름을 입력해주세요.');
             nameInput.focus();
             return;
         }
-        
         this.participantName = name;
         this.saveToLocalStorage();
-        
-        // 요약 화면에 이름 표시
+        await this.saveToFirestore();
         window.utils.getRequiredElement('summaryParticipant').textContent = name;
-        
-        // 첫 질문으로 이동
         this.navigateToScreen('1-1');
     }
     
@@ -171,11 +166,10 @@ class WorkshopApp {
         }
     }
     
-    saveResponse(questionId, value) {
+    async saveResponse(questionId, value) {
         this.responses[questionId] = value;
         this.saveToLocalStorage();
-        
-        // 저장 피드백 (옵션)
+        await this.saveToFirestore();
         this.showSaveIndicator();
     }
     
@@ -197,20 +191,16 @@ class WorkshopApp {
         }
     }
     
-    loadFromLocalStorage() {
+    async loadFromLocalStorage() {
         const savedData = localStorage.getItem('workshopData');
         if (savedData) {
             try {
                 const data = JSON.parse(savedData);
                 this.participantName = data.participantName || '';
                 this.responses = data.responses || {};
-                
-                // 참가자 이름이 있으면 입력 필드에 표시
                 if (this.participantName) {
                     window.utils.getRequiredElement('participantName').value = this.participantName;
                 }
-                
-                // 저장된 응답들을 텍스트 영역에 불러오기
                 Object.keys(this.responses).forEach(questionId => {
                     const textarea = document.querySelector(`[data-question-id="${questionId}"]`);
                     if (textarea) {
@@ -221,6 +211,7 @@ class WorkshopApp {
                 window.utils.showNotification('데이터 불러오기 실패', '저장된 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
             }
         }
+        await this.loadFromFirestore();
     }
     
     showSummary() {
@@ -296,6 +287,42 @@ class WorkshopApp {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    async saveToFirestore() {
+        if (!window.firestore) return;
+        if (!this.participantName) return;
+        try {
+            await window.firestore.collection('workshop_responses').doc(this.participantName).set({
+                participantName: this.participantName,
+                responses: this.responses,
+                lastUpdated: new Date().toISOString()
+            });
+            window.utils.showNotification('워크샵 응답이 Firebase에 저장되었습니다!', 'success');
+        } catch (error) {
+            window.utils.showNotification('Firebase 저장 실패: ' + error, 'error');
+        }
+    }
+
+    async loadFromFirestore() {
+        if (!window.firestore) return;
+        if (!this.participantName) return;
+        try {
+            const doc = await window.firestore.collection('workshop_responses').doc(this.participantName).get();
+            if (doc.exists) {
+                const data = doc.data();
+                this.responses = data.responses || {};
+                // 저장된 응답들을 텍스트 영역에 불러오기
+                Object.keys(this.responses).forEach(questionId => {
+                    const textarea = document.querySelector(`[data-question-id="${questionId}"]`);
+                    if (textarea) {
+                        textarea.value = this.responses[questionId];
+                    }
+                });
+            }
+        } catch (error) {
+            window.utils.showNotification('Firebase 불러오기 실패: ' + error, 'error');
+        }
     }
 }
 
