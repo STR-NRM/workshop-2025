@@ -268,11 +268,11 @@
     <!-- Chart.js를 먼저 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
-    <!-- 애플리케이션 스크립트들 - defer 속성 추가 및 버전 파라미터 -->
-    <script src="ideas-data.js?v=2025012301" defer></script>
-    <script src="evaluation.js?v=2025012301" defer></script>
-    <script src="results.js?v=2025012301" defer></script>
-    <script src="charts.js?v=2025012301" defer></script>
+    <!-- 애플리케이션 스크립트들 - 순서대로 로드 -->
+    <script src="ideas-data.js"></script>
+    <script src="evaluation.js"></script>
+    <script src="results.js"></script>
+    <script src="charts.js"></script>
     
     <!-- 초기화 스크립트 - 맨 마지막에 실행 -->
     <script>

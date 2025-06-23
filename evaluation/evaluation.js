@@ -679,9 +679,9 @@ class EvaluationApp {
     }
 }
 
-// 앱 초기화
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded event fired');
+// 앱 초기화 - window load 이벤트 사용으로 모든 스크립트 로드 보장
+window.addEventListener('load', () => {
+    console.log('Window load event fired');
     console.log('AI_IDEAS_DATA available:', typeof AI_IDEAS_DATA !== 'undefined');
     console.log('EVALUATION_CRITERIA available:', typeof EVALUATION_CRITERIA !== 'undefined');
     
@@ -701,6 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('EvaluationApp initialized successfully');
     } catch (error) {
         console.error('Error initializing EvaluationApp:', error);
+        alert('페이지 초기화 중 오류가 발생했습니다. 페이지를 새로고침해주세요.');
     }
 });
 
