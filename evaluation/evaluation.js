@@ -10,9 +10,9 @@ class EvaluationApp {
         this.initializeApp();
     }
     
-    initializeApp() {
+    async initializeApp() {
         // LocalStorage에서 데이터 불러오기
-        this.loadFromLocalStorage();
+        await this.loadFromFirestore();
         
         // 이벤트 리스너 설정
         this.setupEventListeners();
@@ -26,18 +26,18 @@ class EvaluationApp {
         const startButton = document.getElementById('startEvaluation');
         if (startButton) {
             console.log('Start button found, adding event listener');
-            startButton.addEventListener('click', () => {
+            startButton.addEventListener('click', async () => {
                 console.log('Start button clicked');
-                this.startEvaluation();
+                await this.startEvaluation();
             });
         } else {
             console.error('Start button not found!');
         }
         
         // 이름 입력 Enter 키 처리
-        document.getElementById('evaluatorName').addEventListener('keypress', (e) => {
+        document.getElementById('evaluatorName').addEventListener('keypress', async (e) => {
             if (e.key === 'Enter') {
-                this.startEvaluation();
+                await this.startEvaluation();
             }
         });
         
@@ -56,8 +56,8 @@ class EvaluationApp {
             document.getElementById('addCustomIdea').style.display = 'none';
         });
         
-        document.getElementById('saveCustomIdea').addEventListener('click', () => {
-            this.saveCustomIdea();
+        document.getElementById('saveCustomIdea').addEventListener('click', async () => {
+            await this.saveCustomIdea();
         });
         
         document.getElementById('cancelCustomIdea').addEventListener('click', () => {
@@ -74,8 +74,8 @@ class EvaluationApp {
             this.closeModal();
         });
         
-        document.getElementById('saveEvaluation').addEventListener('click', () => {
-            this.saveEvaluation();
+        document.getElementById('saveEvaluation').addEventListener('click', async () => {
+            await this.saveEvaluation();
         });
         
         document.getElementById('cancelEvaluation').addEventListener('click', () => {
@@ -105,7 +105,7 @@ class EvaluationApp {
         return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
-    startEvaluation() {
+    async startEvaluation() {
         try {
             console.log('startEvaluation function called');
             const nameInput = window.utils.getRequiredElement('evaluatorName');
@@ -160,7 +160,7 @@ class EvaluationApp {
             // 진행률 업데이트
             this.updateProgress();
             // 데이터 저장
-            this.saveToLocalStorage();
+            await this.saveToFirestore();
             console.log('startEvaluation completed successfully');
         } catch (error) {
             console.error('Error in startEvaluation:', error);
@@ -269,7 +269,7 @@ class EvaluationApp {
         this.currentIdeaId = null;
     }
     
-    saveEvaluation() {
+    async saveEvaluation() {
         if (!this.currentUser || !this.currentIdeaId) return;
         
         const evaluation = {
@@ -288,7 +288,7 @@ class EvaluationApp {
         // UI 업데이트
         this.renderIdeasGrid();
         this.updateProgress();
-        this.saveToLocalStorage();
+        await this.saveToFirestore();
         
         // 모달 닫기
         this.closeModal();
@@ -320,7 +320,7 @@ class EvaluationApp {
         }, 3000);
     }
     
-    saveCustomIdea() {
+    async saveCustomIdea() {
         const title = document.getElementById('customIdeaTitle').value.trim();
         const description = document.getElementById('customIdeaDescription').value.trim();
         
@@ -345,7 +345,7 @@ class EvaluationApp {
         // UI 업데이트
         this.renderIdeasGrid();
         this.cancelCustomIdea();
-        this.saveToLocalStorage();
+        await this.saveToFirestore();
     }
     
     cancelCustomIdea() {
@@ -663,25 +663,26 @@ class EvaluationApp {
         document.getElementById('evaluationSection').style.display = 'block';
     }
     
-    saveToLocalStorage() {
-        const data = {
-            allEvaluations: this.allEvaluations,
-            customIdeas: this.customIdeas,
-            lastUpdated: new Date().toISOString()
-        };
-        localStorage.setItem('evaluationData', JSON.stringify(data));
+    async saveToFirestore() {
+        if (!this.currentUser) return;
+        try {
+            await window.firestore.collection('evaluations').doc(this.currentUser.id).set(this.currentUser);
+            window.utils.showNotification('평가가 저장되었습니다! (Firebase)', 'success');
+        } catch (error) {
+            window.utils.showNotification('Firebase 저장 실패: ' + error, 'error');
+        }
     }
-    
-    loadFromLocalStorage() {
-        const savedData = localStorage.getItem('evaluationData');
-        if (savedData) {
-            try {
-                const data = JSON.parse(savedData);
-                this.allEvaluations = data.allEvaluations || {};
-                this.customIdeas = data.customIdeas || [];
-            } catch (error) {
-                console.error('저장된 데이터 불러오기 실패:', error);
-            }
+
+    async loadFromFirestore() {
+        try {
+            const snapshot = await window.firestore.collection('evaluations').get();
+            this.allEvaluations = {};
+            snapshot.forEach(doc => {
+                this.allEvaluations[doc.id] = doc.data();
+            });
+            // Optionally, set currentUser if you want to auto-login last user
+        } catch (error) {
+            window.utils.showNotification('Firebase 불러오기 실패: ' + error, 'error');
         }
     }
 }
