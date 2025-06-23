@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 상반기 팀 워크샵</title>
+    <link rel="stylesheet" href="common/styles.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            padding: var(--spacing-md);
+        }
+
+        .landing-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .landing-title {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            color: var(--text-inverse);
+            margin-bottom: var(--spacing-md);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .landing-subtitle {
+            font-size: var(--text-xl);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: var(--spacing-2xl);
+            font-weight: var(--font-medium);
+        }
+
+        .landing-cards {
+            display: grid;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .landing-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+        }
+
+        .landing-card h2 {
+            font-size: var(--text-2xl);
+            color: var(--primary);
+            margin-bottom: var(--spacing-sm);
+            font-weight: var(--font-bold);
+        }
+
+        .landing-card p {
+            color: var(--text-secondary);
+            line-height: var(--leading-relaxed);
+            font-size: var(--text-base);
+        }
+
+        .landing-card .card-icon {
+            font-size: var(--text-5xl);
+            margin-bottom: var(--spacing-md);
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .landing-info {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: var(--text-sm);
+            margin-top: var(--spacing-xl);
+        }
+
+        .landing-date {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(255, 255, 255, 0.2);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--radius-full);
+            font-weight: var(--font-medium);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        @media (min-width: 768px) {
+            .landing-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 애니메이션 */
+        .landing-container > * {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .landing-title {
+            animation-delay: 0.1s;
+        }
+
+        .landing-subtitle {
+            animation-delay: 0.2s;
+        }
+
+        .landing-date {
+            animation-delay: 0.3s;
+        }
+
+        .landing-cards .landing-card:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .landing-cards .landing-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .landing-info {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <h1 class="landing-title">2025년 상반기 팀 워크샵</h1>
+        <p class="landing-subtitle">AI 전략팀의 미래를 함께 그려갑니다</p>
+        
+        <div class="landing-date">
+            <span>📅</span>
+            <span>2025년 상반기</span>
+        </div>
+
+        <div class="landing-cards">
+            <a href="workshop/index.html" class="landing-card">
+                <div class="card-icon">💡</div>
+                <h2>메인 워크샵</h2>
+                <p>안건별 질문에 대한 의견을 나누고 팀의 방향성을 함께 고민합니다</p>
+            </a>
+
+            <a href="evaluation/index.html" class="landing-card">
+                <div class="card-icon">📊</div>
+                <h2>아이디어 평가</h2>
+                <p>차세대 AI 서비스 아이디어를 다각도로 평가하고 우선순위를 정합니다</p>
+            </a>
+        </div>
+
+        <p class="landing-info">
+            ✨ 모든 의견은 자동으로 저장되며, 언제든지 이어서 작성할 수 있습니다
+        </p>
+    </div>
+</body>
+</html>
