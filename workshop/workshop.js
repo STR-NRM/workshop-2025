@@ -1,5 +1,3 @@
-import { escapeHtml, getRequiredElement, showNotification } from '../common/utils.js';
-
 // 워크샵 메인 로직
 class WorkshopApp {
     constructor() {
@@ -29,11 +27,11 @@ class WorkshopApp {
     
     setupEventListeners() {
         // 시작 버튼
-        const startBtn = getRequiredElement('startBtn');
+        const startBtn = window.utils.getRequiredElement('startBtn');
         startBtn.addEventListener('click', () => this.startWorkshop());
         
         // 참가자 이름 입력 Enter 키 처리
-        const nameInput = getRequiredElement('participantName');
+        const nameInput = window.utils.getRequiredElement('participantName');
         nameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.startWorkshop();
@@ -64,16 +62,16 @@ class WorkshopApp {
         });
         
         // 내보내기 버튼들
-        getRequiredElement('exportJson').addEventListener('click', () => {
+        window.utils.getRequiredElement('exportJson').addEventListener('click', () => {
             this.exportToJson();
         });
         
-        getRequiredElement('exportPdf').addEventListener('click', () => {
+        window.utils.getRequiredElement('exportPdf').addEventListener('click', () => {
             this.exportToPdf();
         });
         
         // 처음으로 버튼
-        getRequiredElement('backToStart').addEventListener('click', () => {
+        window.utils.getRequiredElement('backToStart').addEventListener('click', () => {
             if (confirm('처음으로 돌아가시겠습니까? 모든 응답은 저장되어 있습니다.')) {
                 this.navigateToScreen('startScreen');
             }
@@ -94,7 +92,7 @@ class WorkshopApp {
     }
     
     startWorkshop() {
-        const nameInput = getRequiredElement('participantName');
+        const nameInput = window.utils.getRequiredElement('participantName');
         const name = nameInput.value.trim();
         
         if (!name) {
@@ -107,7 +105,7 @@ class WorkshopApp {
         this.saveToLocalStorage();
         
         // 요약 화면에 이름 표시
-        getRequiredElement('summaryParticipant').textContent = name;
+        window.utils.getRequiredElement('summaryParticipant').textContent = name;
         
         // 첫 질문으로 이동
         this.navigateToScreen('1-1');
@@ -123,7 +121,7 @@ class WorkshopApp {
         // 새 화면 표시
         let newScreenEl;
         if (screenId === 'startScreen' || screenId === 'summary') {
-            newScreenEl = getRequiredElement(screenId);
+            newScreenEl = window.utils.getRequiredElement(screenId);
         } else {
             newScreenEl = document.querySelector(`[data-question="${screenId}"]`);
         }
@@ -150,9 +148,9 @@ class WorkshopApp {
     }
     
     updateProgress() {
-        const progressFill = getRequiredElement('progressFill');
-        const currentQuestionSpan = getRequiredElement('currentQuestion');
-        const totalQuestionsSpan = getRequiredElement('totalQuestions');
+        const progressFill = window.utils.getRequiredElement('progressFill');
+        const currentQuestionSpan = window.utils.getRequiredElement('currentQuestion');
+        const totalQuestionsSpan = window.utils.getRequiredElement('totalQuestions');
         
         totalQuestionsSpan.textContent = this.totalQuestions;
         
@@ -192,7 +190,7 @@ class WorkshopApp {
         try {
             localStorage.setItem('workshopData', JSON.stringify(data));
         } catch (error) {
-            showNotification('저장 실패', '저장 중 오류가 발생했습니다. 브라우저 설정을 확인해주세요.', 'error');
+            window.utils.showNotification('저장 실패', '저장 중 오류가 발생했습니다. 브라우저 설정을 확인해주세요.', 'error');
         }
     }
     
@@ -206,7 +204,7 @@ class WorkshopApp {
                 
                 // 참가자 이름이 있으면 입력 필드에 표시
                 if (this.participantName) {
-                    getRequiredElement('participantName').value = this.participantName;
+                    window.utils.getRequiredElement('participantName').value = this.participantName;
                 }
                 
                 // 저장된 응답들을 텍스트 영역에 불러오기
@@ -217,13 +215,13 @@ class WorkshopApp {
                     }
                 });
             } catch (error) {
-                showNotification('데이터 불러오기 실패', '저장된 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
+                window.utils.showNotification('데이터 불러오기 실패', '저장된 데이터를 불러오는 중 오류가 발생했습니다.', 'error');
             }
         }
     }
     
     showSummary() {
-        const summaryContainer = getRequiredElement('responseSummary');
+        const summaryContainer = window.utils.getRequiredElement('responseSummary');
         summaryContainer.innerHTML = '';
         
         WORKSHOP_QUESTIONS.agendas.forEach(agenda => {
@@ -235,7 +233,7 @@ class WorkshopApp {
                 responseItem.innerHTML = `
                     <div class="response-agenda">안건 ${agenda.id}: ${agenda.title}</div>
                     <div class="response-question">${question.text}</div>
-                    <div class="response-answer">${escapeHtml(response)}</div>
+                    <div class="response-answer">${window.utils.escapeHtml(response)}</div>
                 `;
                 
                 summaryContainer.appendChild(responseItem);

@@ -1,5 +1,3 @@
-import { escapeHtml } from '../common/utils.js';
-
 // PDF 내보내기 기능
 function exportToPdf(participantName, responses) {
     // 간단한 PDF 내보내기 구현 (브라우저 인쇄 API 사용)
@@ -148,7 +146,7 @@ function generatePrintContent(participantName, responses) {
             content += `
                 <div class="question-block">
                     <div class="question">${question.text}</div>
-                    <div class="answer">${escapeHtml(answer)}</div>
+                    <div class="answer">${window.utils.escapeHtml(answer)}</div>
                 </div>
             `;
         });

@@ -107,15 +107,15 @@ class EvaluationApp {
     startEvaluation() {
         try {
             console.log('startEvaluation function called');
-            const nameInput = getRequiredElement('evaluatorName');
+            const nameInput = window.utils.getRequiredElement('evaluatorName');
             if (!nameInput) {
-                showNotification('이름 입력란을 찾을 수 없습니다.', 'error');
+                window.utils.showNotification('이름 입력란을 찾을 수 없습니다.', 'error');
                 return;
             }
             const name = nameInput.value.trim();
             console.log('Evaluator name:', name);
             if (!name) {
-                showNotification('평가자 이름을 입력해주세요.', 'error');
+                window.utils.showNotification('평가자 이름을 입력해주세요.', 'error');
                 nameInput.focus();
                 return;
             }
@@ -134,21 +134,21 @@ class EvaluationApp {
                 this.allEvaluations[this.currentUser.id] = this.currentUser;
             }
             // Check for required DOM elements
-            const currentEvaluator = getRequiredElement('currentEvaluator');
-            const evaluatorInfo = getRequiredElement('evaluatorInfo');
-            const evaluationSection = getRequiredElement('evaluationSection');
+            const currentEvaluator = window.utils.getRequiredElement('currentEvaluator');
+            const evaluatorInfo = window.utils.getRequiredElement('evaluatorInfo');
+            const evaluationSection = window.utils.getRequiredElement('evaluationSection');
             const participantInputGroup = document.querySelector('.participant-input-group');
             if (!participantInputGroup) {
-                showNotification('참가자 입력 그룹 요소가 없습니다.', 'error');
+                window.utils.showNotification('참가자 입력 그룹 요소가 없습니다.', 'error');
                 return;
             }
             // Check for global data
             if (typeof AI_IDEAS_DATA === 'undefined' || !Array.isArray(AI_IDEAS_DATA)) {
-                showNotification('AI 아이디어 데이터가 로드되지 않았습니다.', 'error');
+                window.utils.showNotification('AI 아이디어 데이터가 로드되지 않았습니다.', 'error');
                 return;
             }
             if (typeof EVALUATION_CRITERIA === 'undefined' || typeof EVALUATION_CRITERIA !== 'object') {
-                showNotification('평가 기준 데이터가 로드되지 않았습니다.', 'error');
+                window.utils.showNotification('평가 기준 데이터가 로드되지 않았습니다.', 'error');
                 return;
             }
             // UI 업데이트
@@ -163,7 +163,7 @@ class EvaluationApp {
             console.log('startEvaluation completed successfully');
         } catch (error) {
             console.error('Error in startEvaluation:', error);
-            showNotification('초기화 오류: ' + (error.message || error), 'error');
+            window.utils.showNotification('초기화 오류: ' + (error.message || error), 'error');
         }
     }
     
@@ -583,7 +583,7 @@ class EvaluationApp {
                             <span class="comment-idea">${idea.title}</span>
                             <span class="comment-author">${commentData.author}</span>
                         </div>
-                        <div class="comment-text">${escapeHtml(commentData.comment)}</div>
+                        <div class="comment-text">${window.utils.escapeHtml(commentData.comment)}</div>
                     `;
                     
                     commentsList.appendChild(commentItem);

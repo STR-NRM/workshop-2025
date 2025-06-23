@@ -1,5 +1,3 @@
-import { getRequiredElement } from '../common/utils.js';
-
 // 차트 관리 및 시각화
 class ChartManager {
     constructor() {
@@ -33,7 +31,7 @@ class ChartManager {
     }
     
     createCategoryChart(stats) {
-        const ctx = getRequiredElement('categoryChart');
+        const ctx = window.utils.getRequiredElement('categoryChart');
         if (!ctx) return;
         
         // 기존 차트 제거
@@ -104,7 +102,7 @@ class ChartManager {
     }
     
     createTopIdeasChart(evaluationData) {
-        const ctx = getRequiredElement('topIdeasChart');
+        const ctx = window.utils.getRequiredElement('topIdeasChart');
         if (!ctx) return;
         
         // 기존 차트 제거
