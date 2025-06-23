@@ -1,5 +1,3 @@
-import { escapeHtml, getRequiredElement, showNotification } from '../common/utils.js';
-
 // 평가 사이트 메인 로직
 class EvaluationApp {
     constructor() {
@@ -752,3 +750,5 @@ window.debugStartEvaluation = function() {
         console.error('evaluationApp is not initialized');
     }
 };
+
+window.EvaluationApp = EvaluationApp;
