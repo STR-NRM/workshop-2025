@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>평가 페이지 디버그 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .debug-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .success {
+            color: green;
+        }
+        
+        .error {
+            color: red;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>평가 페이지 디버그 테스트</h1>
+    
+    <div id="debug-log" class="debug-info">
+        <h3>디버그 로그:</h3>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <input type="text" id="testName" placeholder="이름 입력">
+        <button id="testButton" onclick="testButtonClick()">테스트 버튼</button>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <button onclick="checkAllElements()">모든 요소 확인</button>
+        <button onclick="testEvaluationApp()">EvaluationApp 테스트</button>
+    </div>
+    
+    <script>
+        // 디버그 로그 함수
+        function log(message, isError = false) {
+            const debugLog = document.getElementById('debug-log');
+            const p = document.createElement('p');
+            p.className = isError ? 'error' : 'success';
+            p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            debugLog.appendChild(p);
+            console.log(message);
+        }
+        
+        // 페이지 로드 시작
+        log('페이지 로드 시작');
+        
+        // 테스트 버튼 클릭
+        function testButtonClick() {
+            const nameInput = document.getElementById('testName');
+            const name = nameInput.value.trim();
+            log(`버튼 클릭됨! 입력된 이름: "${name}"`);
+            
+            if (!name) {
+                alert('이름을 입력해주세요!');
+                return;
+            }
+            
+            alert(`안녕하세요, ${name}님!`);
+        }
+        
+        // 모든 요소 확인
+        function checkAllElements() {
+            log('=== 요소 확인 시작 ===');
+            
+            // 스크립트 로드 확인
+            log(`AI_IDEAS_DATA 존재: ${typeof AI_IDEAS_DATA !== 'undefined'}`);
+            log(`EVALUATION_CRITERIA 존재: ${typeof EVALUATION_CRITERIA !== 'undefined'}`);
+            log(`EvaluationApp 존재: ${typeof EvaluationApp !== 'undefined'}`);
+            log(`Chart 존재: ${typeof Chart !== 'undefined'}`);
+            
+            // DOM 요소 확인
+            const elements = [
+                'evaluatorName',
+                'startEvaluation',
+                'evaluationSection',
+                'ideasGrid'
+            ];
+            
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    log(`✓ ${id} 요소 존재`);
+                } else {
+                    log(`✗ ${id} 요소 없음`, true);
+                }
+            });
+        }
+        
+        // EvaluationApp 테스트
+        function testEvaluationApp() {
+            log('=== EvaluationApp 테스트 ===');
+            
+            if (typeof EvaluationApp === 'undefined') {
+                log('EvaluationApp이 정의되지 않았습니다!', true);
+                return;
+            }
+            
+            try {
+                const app = new EvaluationApp();
+                log('EvaluationApp 인스턴스 생성 성공!');
+                
+                // startEvaluation 메서드 테스트
+                if (typeof app.startEvaluation === 'function') {
+                    log('startEvaluation 메서드 존재');
+                } else {
+                    log('startEvaluation 메서드 없음', true);
+                }
+            } catch (error) {
+                log(`EvaluationApp 생성 실패: ${error.message}`, true);
+            }
+        }
+        
+        // window.onload
+        window.onload = function() {
+            log('window.onload 실행됨');
+            setTimeout(() => {
+                checkAllElements();
+            }, 1000);
+        };
+        
+        // DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            log('DOMContentLoaded 이벤트 발생');
+        });
+    </script>
+    
+    <!-- 실제 스크립트들 로드 -->
+    <script src="../ideas-data.js" defer></script>
+    <script src="../evaluation.js" defer></script>
+    <script src="../results.js" defer></script>
+    <script src="../charts.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</body>
+</html>

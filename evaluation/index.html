@@ -268,23 +268,81 @@
     <!-- Chart.js를 먼저 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
-    <!-- 디버깅을 위한 스크립트 추가 -->
-    <script>
-        console.log('Page loaded');
-        
-        // 스크립트 로드 확인
-        window.addEventListener('load', function() {
-            console.log('Window loaded');
-            console.log('AI_IDEAS_DATA exists:', typeof AI_IDEAS_DATA !== 'undefined');
-            console.log('EvaluationApp exists:', typeof EvaluationApp !== 'undefined');
-            console.log('Chart exists:', typeof Chart !== 'undefined');
-        });
-    </script>
+    <!-- 애플리케이션 스크립트들 - defer 속성 추가 -->
+    <script src="ideas-data.js" defer></script>
+    <script src="evaluation.js" defer></script>
+    <script src="results.js" defer></script>
+    <script src="charts.js" defer></script>
     
-    <!-- 애플리케이션 스크립트들 -->
-    <script src="ideas-data.js"></script>
-    <script src="evaluation.js"></script>
-    <script src="results.js"></script>
-    <script src="charts.js"></script>
+    <!-- 초기화 스크립트 - 맨 마지막에 실행 -->
+    <script>
+        // 디버깅을 위한 콘솔 출력
+        console.log('Page initialization started');
+        
+        // 모든 스크립트가 로드된 후 실행되도록 보장
+        window.addEventListener('load', function() {
+            console.log('Window fully loaded');
+            
+            // 약간의 지연을 두고 초기화 확인
+            setTimeout(function() {
+                console.log('Checking initialization...');
+                console.log('AI_IDEAS_DATA:', typeof AI_IDEAS_DATA !== 'undefined' ? 'Loaded' : 'Not loaded');
+                console.log('EvaluationApp:', typeof EvaluationApp !== 'undefined' ? 'Loaded' : 'Not loaded');
+                
+                // 수동으로 이벤트 리스너 추가 (폴백)
+                const startButton = document.getElementById('startEvaluation');
+                if (startButton && !startButton.hasAttribute('data-listener-added')) {
+                    console.log('Adding manual event listener to start button');
+                    startButton.setAttribute('data-listener-added', 'true');
+                    
+                    startButton.addEventListener('click', function() {
+                        console.log('Start button clicked (manual listener)');
+                        
+                        const nameInput = document.getElementById('evaluatorName');
+                        const name = nameInput ? nameInput.value.trim() : '';
+                        
+                        if (!name) {
+                            alert('평가자 이름을 입력해주세요.');
+                            if (nameInput) nameInput.focus();
+                            return;
+                        }
+                        
+                        // evaluationApp이 있으면 사용, 없으면 기본 동작
+                        if (window.evaluationApp && typeof window.evaluationApp.startEvaluation === 'function') {
+                            window.evaluationApp.startEvaluation();
+                        } else {
+                            console.error('EvaluationApp not initialized properly');
+                            alert('페이지 초기화 중 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+                        }
+                    });
+                }
+                
+                // Enter 키 처리도 추가
+                const nameInput = document.getElementById('evaluatorName');
+                if (nameInput && !nameInput.hasAttribute('data-listener-added')) {
+                    nameInput.setAttribute('data-listener-added', 'true');
+                    nameInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            const startButton = document.getElementById('startEvaluation');
+                            if (startButton) startButton.click();
+                        }
+                    });
+                }
+            }, 500);
+        });
+        
+        // 개발자를 위한 디버그 함수
+        window.debugEvaluation = function() {
+            console.log('=== Debug Information ===');
+            console.log('AI_IDEAS_DATA:', typeof AI_IDEAS_DATA !== 'undefined' ? AI_IDEAS_DATA : 'Not loaded');
+            console.log('EVALUATION_CRITERIA:', typeof EVALUATION_CRITERIA !== 'undefined' ? EVALUATION_CRITERIA : 'Not loaded');
+            console.log('EvaluationApp:', typeof EvaluationApp !== 'undefined' ? 'Class exists' : 'Not loaded');
+            console.log('evaluationApp instance:', window.evaluationApp || 'Not created');
+            console.log('Start button:', document.getElementById('startEvaluation'));
+            console.log('Name input:', document.getElementById('evaluatorName'));
+        };
+        
+        console.log('Initialization script completed. Type debugEvaluation() in console for debug info.');
+    </script>
 </body>
 </html>
