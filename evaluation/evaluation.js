@@ -689,6 +689,33 @@ class EvaluationApp {
 
 // 앱 초기화 - window load 이벤트 사용으로 모든 스크립트 로드 보장
 window.addEventListener('load', () => {
+    const requiredIds = [
+        'startEvaluation', 'evaluatorName', 'currentEvaluator', 'evaluatorInfo', 'evaluationSection',
+        'ideasGrid', 'addCustomIdea', 'customIdeaForm', 'saveCustomIdea', 'cancelCustomIdea',
+        'completeEvaluation', 'closeModal', 'saveEvaluation', 'cancelEvaluation', 'exportResults', 'backToEvaluation'
+    ];
+    let missing = false;
+    requiredIds.forEach(id => {
+        if (!document.getElementById(id)) {
+            console.error('Missing element:', id);
+            alert('필수 요소가 누락되었습니다: ' + id + '\nHTML을 확인하세요.');
+            missing = true;
+        }
+    });
+    if (typeof AI_IDEAS_DATA === 'undefined') {
+        console.error('AI_IDEAS_DATA is undefined');
+        alert('AI_IDEAS_DATA is undefined. ideas-data.js가 먼저 로드되어야 합니다.');
+        missing = true;
+    }
+    if (typeof EVALUATION_CRITERIA === 'undefined') {
+        console.error('EVALUATION_CRITERIA is undefined');
+        alert('EVALUATION_CRITERIA is undefined. ideas-data.js가 먼저 로드되어야 합니다.');
+        missing = true;
+    }
+    if (missing) {
+        throw new Error('필수 요소 또는 데이터가 누락되어 초기화를 중단합니다.');
+    }
+    
     console.log('Window load event fired');
     console.log('AI_IDEAS_DATA available:', typeof AI_IDEAS_DATA !== 'undefined');
     console.log('EVALUATION_CRITERIA available:', typeof EVALUATION_CRITERIA !== 'undefined');
