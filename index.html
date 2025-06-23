@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025년 상반기 팀 워크샵</title>
+    <meta name="description" content="AI 전략팀 워크샵 진행 및 아이디어 평가 플랫폼">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="common/styles.css">
     <style>
         body {
@@ -163,5 +166,16 @@
             ✨ 모든 의견은 자동으로 저장되며, 언제든지 이어서 작성할 수 있습니다
         </p>
     </div>
+    
+    <script>
+        // Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/workshop-2025/sw.js')
+                    .then(registration => console.log('SW registered:', registration.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>
