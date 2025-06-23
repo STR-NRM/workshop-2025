@@ -1,5 +1,5 @@
 // Service Worker for offline support
-const CACHE_NAME = 'workshop-2025-v1';
+const CACHE_NAME = 'workshop-2025-v2'; // 버전 변경
 const urlsToCache = [
   '/workshop-2025/',
   '/workshop-2025/index.html',
