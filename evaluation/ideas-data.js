@@ -134,3 +134,6 @@ const CATEGORY_COLORS = {
     '학업/연구 활동 전반 지원': '#ef4444',
     '공유 서재 및 협업 지원': '#ec4899'
 };
+
+window.AI_IDEAS_DATA = AI_IDEAS_DATA;
+window.EVALUATION_CRITERIA = EVALUATION_CRITERIA;
